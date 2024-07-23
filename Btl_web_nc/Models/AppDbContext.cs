@@ -8,11 +8,11 @@ namespace Btl_web_nc.Models
 
         }
         public DbSet<User> Users { get; set; }
-        public DbSet<role> Roles { get; set; }
-        public DbSet<post> Posts { get; set; }
-        public DbSet<favourite> Favourites { get; set; }
-        public DbSet<notify> Notifies { get; set; }
-        public DbSet<type> Types { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Favourite> Favourites { get; set; }
+        public DbSet<Notify> Notifies { get; set; }
+        public DbSet<Type> Types { get; set; }
        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,42 +25,42 @@ namespace Btl_web_nc.Models
                 .OnDelete(DeleteBehavior.NoAction);
 
             // relationship between 1-n User and Posts
-            modelBuilder.Entity<post>()
+            modelBuilder.Entity<Post>()
                 .HasOne(p => p.User)
                 .WithMany(u => u.Posts)
                 .HasForeignKey(p => p.userId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // relationship between 1-n User and Favourites
-            modelBuilder.Entity<favourite>()
+            modelBuilder.Entity<Favourite>()
                 .HasOne(f => f.User)
                 .WithMany(u => u.Favourites)
                 .HasForeignKey(f => f.userId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // relationship between 1-n User and Notifies
-            modelBuilder.Entity<notify>()
+            modelBuilder.Entity<Notify>()
                 .HasOne(n => n.User)
                 .WithMany(u => u.Notifies)
                 .HasForeignKey(n => n.userId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // relationship between 1-n Post and Favourites
-            modelBuilder.Entity<favourite>()
+            modelBuilder.Entity<Favourite>()
                 .HasOne(f => f.Post)
                 .WithMany(p => p.Favourites)
                 .HasForeignKey(f => f.postId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // relationship between 1-n Post and Notifies
-            modelBuilder.Entity<notify>()
+            modelBuilder.Entity<Notify>()
                 .HasOne(n => n.Post)
                 .WithMany(p => p.Notifies)
                 .HasForeignKey(n => n.postId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             // relationship between 1-n Type and Post
-            modelBuilder.Entity<post>()
+            modelBuilder.Entity<Post>()
                 .HasOne(p => p.Type)
                 .WithMany(t => t.Posts)
                 .HasForeignKey(p => p.typeId)

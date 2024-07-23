@@ -2,7 +2,7 @@
 
 namespace Btl_web_nc.Models
 {
-    public class userRepository:IUserRepositories
+    public class UserRepository:IUserRepositories
     {
     }
 }
