@@ -2,7 +2,7 @@
 
 namespace Btl_web_nc.Models
 {
-    public class notifyRepository:INotifyRepositories
+    public class NotifyRepository:INotifyRepositories
     {
     }
 }

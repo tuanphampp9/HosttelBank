@@ -2,7 +2,7 @@
 
 namespace Btl_web_nc.Models
 {
-    public class roleRepository:IRoleRepositories
+    public class RoleRepository:IRoleRepositories
     {
     }
 }

@@ -9,14 +9,14 @@ namespace Btl_web_nc.Models
     {
         [Key]
         public long userId { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public string phoneNumber { get; set; }
+        public string? username { get; set; }
+        public string? password { get; set; }
+        public string? phoneNumber { get; set; }
         public long roleId { get; set; }
         [ForeignKey("roleId")]
-        public virtual role Role { get; set; }
-        public virtual ICollection<post> Posts { get; set; }
-        public virtual ICollection<favourite> Favourites { get; set; }
-        public virtual ICollection<notify> Notifies { get; set; }
+        public virtual Role? Role { get; set; }
+        public virtual ICollection<Post>? Posts { get; set; }
+        public virtual ICollection<Favourite>? Favourites { get; set; }
+        public virtual ICollection<Notify>? Notifies { get; set; }
     }
 }
