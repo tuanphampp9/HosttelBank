@@ -22,37 +22,7 @@ namespace Btl_web_nc.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Btl_web_nc.Models.User", b =>
-                {
-                    b.Property<long>("userId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("userId"));
-
-                    b.Property<string>("password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("phoneNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("roleId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("userId");
-
-                    b.HasIndex("roleId");
-
-                    b.ToTable("users");
-                });
-
-            modelBuilder.Entity("Btl_web_nc.Models.favourite", b =>
+            modelBuilder.Entity("Btl_web_nc.Models.Favourite", b =>
                 {
                     b.Property<long>("favouriteId")
                         .ValueGeneratedOnAdd()
@@ -75,7 +45,7 @@ namespace Btl_web_nc.Migrations
                     b.ToTable("favourites");
                 });
 
-            modelBuilder.Entity("Btl_web_nc.Models.notify", b =>
+            modelBuilder.Entity("Btl_web_nc.Models.Notify", b =>
                 {
                     b.Property<long>("notifyId")
                         .ValueGeneratedOnAdd()
@@ -84,7 +54,6 @@ namespace Btl_web_nc.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("notifyId"));
 
                     b.Property<string>("content")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("postId")
@@ -102,7 +71,7 @@ namespace Btl_web_nc.Migrations
                     b.ToTable("notifies");
                 });
 
-            modelBuilder.Entity("Btl_web_nc.Models.post", b =>
+            modelBuilder.Entity("Btl_web_nc.Models.Post", b =>
                 {
                     b.Property<long>("postId")
                         .ValueGeneratedOnAdd()
@@ -111,7 +80,6 @@ namespace Btl_web_nc.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("postId"));
 
                     b.Property<string>("address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("area")
@@ -121,22 +89,18 @@ namespace Btl_web_nc.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("imageUrls")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("price")
                         .HasColumnType("bigint");
 
                     b.Property<string>("status")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("typeId")
@@ -157,7 +121,7 @@ namespace Btl_web_nc.Migrations
                     b.ToTable("posts");
                 });
 
-            modelBuilder.Entity("Btl_web_nc.Models.role", b =>
+            modelBuilder.Entity("Btl_web_nc.Models.Role", b =>
                 {
                     b.Property<long>("roleId")
                         .ValueGeneratedOnAdd()
@@ -173,7 +137,7 @@ namespace Btl_web_nc.Migrations
                     b.ToTable("roles");
                 });
 
-            modelBuilder.Entity("Btl_web_nc.Models.type", b =>
+            modelBuilder.Entity("Btl_web_nc.Models.Type", b =>
                 {
                     b.Property<long?>("typeId")
                         .ValueGeneratedOnAdd()
@@ -191,18 +155,34 @@ namespace Btl_web_nc.Migrations
 
             modelBuilder.Entity("Btl_web_nc.Models.User", b =>
                 {
-                    b.HasOne("Btl_web_nc.Models.role", "Role")
-                        .WithMany("Users")
-                        .HasForeignKey("roleId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
+                    b.Property<long>("userId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
 
-                    b.Navigation("Role");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("userId"));
+
+                    b.Property<string>("password")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("phoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("roleId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("username")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("userId");
+
+                    b.HasIndex("roleId");
+
+                    b.ToTable("users ");
                 });
 
-            modelBuilder.Entity("Btl_web_nc.Models.favourite", b =>
+            modelBuilder.Entity("Btl_web_nc.Models.Favourite", b =>
                 {
-                    b.HasOne("Btl_web_nc.Models.post", "Post")
+                    b.HasOne("Btl_web_nc.Models.Post", "Post")
                         .WithMany("Favourites")
                         .HasForeignKey("postId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -219,9 +199,9 @@ namespace Btl_web_nc.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Btl_web_nc.Models.notify", b =>
+            modelBuilder.Entity("Btl_web_nc.Models.Notify", b =>
                 {
-                    b.HasOne("Btl_web_nc.Models.post", "Post")
+                    b.HasOne("Btl_web_nc.Models.Post", "Post")
                         .WithMany("Notifies")
                         .HasForeignKey("postId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -238,9 +218,9 @@ namespace Btl_web_nc.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Btl_web_nc.Models.post", b =>
+            modelBuilder.Entity("Btl_web_nc.Models.Post", b =>
                 {
-                    b.HasOne("Btl_web_nc.Models.type", "Type")
+                    b.HasOne("Btl_web_nc.Models.Type", "Type")
                         .WithMany("Posts")
                         .HasForeignKey("typeId")
                         .OnDelete(DeleteBehavior.NoAction)
@@ -259,27 +239,38 @@ namespace Btl_web_nc.Migrations
 
             modelBuilder.Entity("Btl_web_nc.Models.User", b =>
                 {
-                    b.Navigation("Favourites");
+                    b.HasOne("Btl_web_nc.Models.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("roleId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
 
-                    b.Navigation("Notifies");
-
-                    b.Navigation("Posts");
+                    b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("Btl_web_nc.Models.post", b =>
+            modelBuilder.Entity("Btl_web_nc.Models.Post", b =>
                 {
                     b.Navigation("Favourites");
 
                     b.Navigation("Notifies");
                 });
 
-            modelBuilder.Entity("Btl_web_nc.Models.role", b =>
+            modelBuilder.Entity("Btl_web_nc.Models.Role", b =>
                 {
                     b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("Btl_web_nc.Models.type", b =>
+            modelBuilder.Entity("Btl_web_nc.Models.Type", b =>
                 {
+                    b.Navigation("Posts");
+                });
+
+            modelBuilder.Entity("Btl_web_nc.Models.User", b =>
+                {
+                    b.Navigation("Favourites");
+
+                    b.Navigation("Notifies");
+
                     b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618

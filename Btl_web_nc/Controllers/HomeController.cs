@@ -1,9 +1,12 @@
 using Btl_web_nc.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
+
 
 namespace Btl_web_nc.Controllers
 {
+    [MyAuthenFilter]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -13,16 +16,25 @@ namespace Btl_web_nc.Controllers
             _logger = logger;
         }
 
+    
         public IActionResult Index()
         {
+
             return View();
         }
 
+        
         public IActionResult Privacy()
         {
             return View();
         }
 
+
+        [AdminAuthorFilter]
+        public IActionResult TestRole()
+        {
+            return View();
+        }
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

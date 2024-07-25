@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace Btl_web_nc.Models
 {
     [Table("roles")]
-    public class Role
+    public class Role 
     {
         [Key]
         public long roleId { get; set; }
