@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Btl_web_nc.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 namespace Btl_web_nc.Models
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -13,10 +16,11 @@ namespace Btl_web_nc.Models
         public DbSet<Favourite> Favourites { get; set; }
         public DbSet<Notify> Notifies { get; set; }
         public DbSet<Type> Types { get; set; }
-       
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+                   
             // relationship between 1-n Role and Users
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Role)
@@ -65,9 +69,10 @@ namespace Btl_web_nc.Models
                 .WithMany(t => t.Posts)
                 .HasForeignKey(p => p.typeId)
                 .OnDelete(DeleteBehavior.NoAction);
-
             base.OnModelCreating(modelBuilder);
         }
 
     }
 }
+
+

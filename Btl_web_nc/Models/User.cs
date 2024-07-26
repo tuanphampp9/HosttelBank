@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
+using Microsoft.AspNetCore.Identity;
 
 namespace Btl_web_nc.Models
 {
-    [Table("users")]
+    [Table("users ")]
     public class User
     {
-        [Key]
+        //[Key]
         public long userId { get; set; }
         public string? username { get; set; }
         public string? password { get; set; }
