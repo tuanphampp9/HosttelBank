@@ -44,8 +44,8 @@ public class AccountController : Controller
             }
             if (model.Password == null)
             {
-                // Xử lý khi UserName là null
-                return BadRequest("Tên đăng nhập không được để trống.");
+                // Xử lý khi Password là null
+                return BadRequest("Mật khẩu không được để trống.");
             }
             var user = await _userRepository.AuthenticateUserAsync(model.UserName, model.Password);
 
@@ -54,10 +54,10 @@ public class AccountController : Controller
             {
                 // Đăng nhập bằng cookie
                 var claims = new List<Claim>
-                {
-                        
+                {   
                     new Claim(ClaimTypes.Name, user.username!),
-                    new Claim(ClaimTypes.Role, user.roleId.ToString()) // Thay thế bằng loại Role của bạn
+                    new Claim(ClaimTypes.Role, user.roleId.ToString()), // Thay thế bằng loại Role của bạn,
+                    new Claim("UserId", user.userId.ToString())
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties
