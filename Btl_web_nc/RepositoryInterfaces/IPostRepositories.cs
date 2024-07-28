@@ -11,7 +11,9 @@ namespace Btl_web_nc.RepositoryInterfaces
         public Task<Post> UpdatePostAsync(PostManageViewModel post);
         public Task<Boolean> DeletePostAsync(int postId);
         public Task<Post> AddNewPost(Post post);
-            public Post GetPostById(long id);
+        public Post GetPostById(long id);
+
+        public List<Post> GetPostsByUserId(long userId);
 
     }
 }

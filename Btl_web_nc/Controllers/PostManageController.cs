@@ -3,7 +3,6 @@ using Btl_web_nc.Models;
 using Btl_web_nc.RepositoryInterfaces;
 
 [MyAuthenFilter]
-[AdminAuthorFilter]
 public class PostManageController : Controller
 {
 
@@ -18,14 +17,31 @@ public class PostManageController : Controller
     public IActionResult Index()
     {
 
-        var posts = _postRepository.GetAllPosts();
-        return View(posts);
-    }
+        // Lấy userId từ claims của người dùng hiện tại
+        var userIdClaim = User.FindFirst("UserId")?.Value;
+        var roleName = User.FindFirst("RoleName")?.Value;
 
-    [HttpGet]
-    public IActionResult PostDetail(long postId){
+        if (userIdClaim == null || !int.TryParse(userIdClaim, out int userId))
+        {
+            // Xử lý khi không tìm thấy userId hoặc userId không hợp lệ
+            return Unauthorized("User ID is not valid or not found.");
+        }
 
-        return RedirectToAction("PostDetail", "Post", new { postId });
+        if (string.Equals(roleName, "Admin", StringComparison.OrdinalIgnoreCase))
+        {
+            // Lấy tất cả các bài đăng nếu người dùng là Admin
+            var posts = _postRepository.GetAllPosts();
+            return View(posts);
+        }
+        else
+        {
+            // Lấy các bài đăng của người dùng theo userId nếu người dùng không phải Admin
+            var posts = _postRepository.GetPostsByUserId(userId);
+            return View(posts);
+        }
+
+
+
     }
 
     // Action để chỉnh sửa bài đăng

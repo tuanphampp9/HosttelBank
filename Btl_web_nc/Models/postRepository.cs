@@ -90,5 +90,12 @@ namespace Btl_web_nc.Models
         Post post = _dbContext.Posts.FirstOrDefault(p => p.postId == id);
         return post;
     }
-}
+
+        public List<Post> GetPostsByUserId(long userId)
+        {
+            return _dbContext.Posts
+                         .Where(p => p.userId == userId) // Giả sử Post có thuộc tính UserId
+                         .ToList();
+        }
+    }
 }

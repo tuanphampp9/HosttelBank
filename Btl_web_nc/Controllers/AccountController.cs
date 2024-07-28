@@ -10,9 +10,11 @@ using Microsoft.AspNetCore.Identity;
 public class AccountController : Controller
 {
     private readonly IUserRepositories _userRepository;
-    public AccountController(IUserRepositories userRepository)
+    private readonly IRoleRepositories _roleRepository;
+    public AccountController(IUserRepositories userRepository, IRoleRepositories roleRepositories)
     {
         _userRepository = userRepository;
+        _roleRepository = roleRepositories;
 
     }
 
@@ -48,16 +50,17 @@ public class AccountController : Controller
                 return BadRequest("Mật khẩu không được để trống.");
             }
             var user = await _userRepository.AuthenticateUserAsync(model.UserName, model.Password);
-
-
-            if (user != null)
+            var role = await _roleRepository.GetRoleByIdAsync(user.roleId);
+            
+            if (user != null && role !=null)
             {
                 // Đăng nhập bằng cookie
                 var claims = new List<Claim>
                 {   
                     new Claim(ClaimTypes.Name, user.username!),
-                    new Claim(ClaimTypes.Role, user.roleId.ToString()), // Thay thế bằng loại Role của bạn,
-                    new Claim("UserId", user.userId.ToString())
+                    new Claim(ClaimTypes.Role, role.roleName!),
+                    new Claim("UserId", user.userId.ToString()),
+                    new Claim("RoleName", role.roleName!)
                 };
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var authProperties = new AuthenticationProperties
@@ -70,7 +73,7 @@ public class AccountController : Controller
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
-                await Task.Delay(3000);
+            
 
                 return RedirectToLocal(returnUrl);
             }

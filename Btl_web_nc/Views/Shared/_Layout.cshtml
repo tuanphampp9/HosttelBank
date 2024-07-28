@@ -30,18 +30,15 @@
                                 asp-action="Privacy">Privacy</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="TestRole">TestRole</a>
-                        </li>
-                        <li class="nav-item">
                             @if (User.Identity!.IsAuthenticated)
                             {
-                                <a asp-action="Logout" asp-controller="Account" class="nav-link"
+                                <a asp-action="Logout" asp-controller="Account" class="nav-link style="margin-left:auto""
                                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng
                                     xuất</a>
                             }
                             else
                             {
-                                <a asp-action="Login" asp-controller="Account" class="nav-link">Đăng nhập</a>
+                                <a asp-action="Login" asp-controller="Account" class="nav-link style="margin-left:auto"">Đăng nhập</a>
                             }
 
                             <form id="logout-form" asp-action="Logout" asp-controller="Account" method="post"
