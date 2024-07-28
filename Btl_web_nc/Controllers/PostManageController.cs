@@ -23,7 +23,7 @@ public class PostManageController : Controller
     }
 
     [HttpGet]
-    public IActionResult PostDetai(long postId){
+    public IActionResult PostDetail(long postId){
 
         return RedirectToAction("PostDetail", "Post", new { postId });
     }

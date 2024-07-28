@@ -40,7 +40,7 @@ namespace Btl_web_nc.Models
 
     public List<Post> GetAllPosts()
     {
-        return _dbContext.Posts.ToList();
+        return _dbContext.Posts.ToList<Post>();
     }
 
     public async Task<Post> GetPostByIdAsync(int postID)
