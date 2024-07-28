@@ -70,12 +70,14 @@ public class AccountController : Controller
                     new ClaimsPrincipal(claimsIdentity),
                     authProperties);
 
+                await Task.Delay(3000);
 
                 return RedirectToLocal(returnUrl);
             }
 
             // Thông báo lỗi
             ModelState.AddModelError("", "Tên đăng nhập hoặc mật khẩu không đúng.");
+            ViewData["ReturnUrl"] = returnUrl;
             return View(model);
         }
 
