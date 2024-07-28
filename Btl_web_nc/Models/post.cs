@@ -15,7 +15,7 @@ namespace Btl_web_nc.Models
         public string? description { get; set; }
         public long price { get; set; }
         public string? status { get; set; }
-        public List<string>? imageUrls { get; set; }
+        public string? imageUrls { get; set; }
         public DateTime createdDate { get; set; }
         public DateTime updatedDate { get; set; }
         public long area { get; set; }
