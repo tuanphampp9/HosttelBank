@@ -51,9 +51,8 @@
     <div class="form-group">
         <label asp-for="Status" class="control-label"></label>
         <select asp-for="Status" class="form-control">
-            <option value="Available">Có sẵn</option>
-            <option value="Sold">Đã bán</option>
             <option value="Pending">Đang chờ</option>
+            <option value="Approved">Duyệt</option>
         </select>
         <span asp-validation-for="Status" class="text-danger"></span>
     </div>
