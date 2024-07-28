@@ -42,9 +42,9 @@ namespace Btl_web_nc.Models
             return false;
         }
 
-        public async Task<User> GetUserByIdAsync(int userId)
+        public User GetUserById(long userId)
         {
-            var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.userId.Equals(userId));
+            var user =  _dbContext.Users.SingleOrDefault(u => u.userId.Equals(userId));
             return user ?? new User();
         }
 

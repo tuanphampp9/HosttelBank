@@ -11,7 +11,7 @@ namespace Btl_web_nc.RepositoryInterfaces
         public Task<User> GetUserByUserNameAsync(string userName);
 
         // Lấy thông tin người dùng theo ID
-        public Task<User> GetUserByIdAsync(int userId);
+        public User GetUserById(long userId);
 
         // Kiểm tra xem người dùng có tồn tại không
         public Task<bool> UserExistsAsync(int userName);

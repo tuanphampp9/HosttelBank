@@ -49,20 +49,24 @@
                                 <input type="hidden" />
                             </form>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="PostManage" asp-action="Index">Quản lý bài đăng</a>
                         </li>
+
+
+                        <li class="nav-item" style="margin-left:auto"><a class="nav-link text-dark" asp-action="PostNew" asp-controller="Post">Đăng tin</a></li>
 
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+     <div class="container">
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+     </div>
 
     <footer class="border-top footer text-muted">
         <div class="container">
