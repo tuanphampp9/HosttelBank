@@ -111,4 +111,38 @@ public class PostManageController : Controller
             return RedirectToAction("Index");
         }
     }
+
+    [HttpPost]
+    public async Task<IActionResult> ChangeStatus(int postId, string Status)
+    {
+        if (!User.IsInRole("Admin"))
+        {
+            return Unauthorized(); // Hoặc trả về lỗi nếu người dùng không phải là Admin
+        }
+
+        var post = await _postRepository.GetPostByIdAsync(postId);
+
+        if (post == null)
+        {
+            return NotFound(); // Nếu không tìm thấy bài đăng
+        }
+        post.status = Status; 
+        var postViewModel = new PostManageViewModel(post);
+
+        // Cập nhật trạng thái
+
+        try
+        {
+            await _postRepository.UpdatePostAsync(postViewModel); // Cập nhật bài đăng
+            TempData["SuccessMessage"] = "Trạng thái bài đăng đã được cập nhật.";
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật trạng thái. Vui lòng thử lại.";
+            // Log lỗi nếu cần thiết
+        }
+
+        return RedirectToAction(nameof(Index)); // Chuyển hướng đến danh sách bài đăng
+
+    }
 }

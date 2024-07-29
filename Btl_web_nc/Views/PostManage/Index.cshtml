@@ -1,6 +1,7 @@
 @model List<Post>
 @{
     var totalPosts = Model.Count;
+    var isAdmin = User.IsInRole("Admin");
 
 }
 <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
@@ -95,7 +96,30 @@
                                     Diện tích: @post.area m<sup>2</sup>
                                 </span>
                             </li>
-                            <li class="list-group-item">Trạng thái: @post.status</li>
+                            <li class="list-group-item">Trạng thái:
+                                @if (isAdmin)
+                                {
+                                    <form action="@Url.Action("ChangeStatus", "PostManage")" method="post"
+                                        style="display:inline;">
+                                        <input type="hidden" name="postId" value="@post.postId" />
+                                        <select name="status" class="form-control form-control-sm" style="width: auto; display: inline;">
+                                            @if (post.status == "Pending")
+                                            {
+                                                <option value="Pending" selected>Đang chờ</option>
+                                                <option value="Approved">Duyệt</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="Pending">Đang chờ</option>
+                                                <option value="Approved" selected>Duyệt</option>
+                                            }
+                                        </select>
+                                        <button type="submit" class="btn btn-warning btn-sm ml-2">Cập nhật</button>
+                                    </form>
+                                }else{
+                                    @post.status
+                                }
+                            </li>
                             <li class="list-group-item">Ngày tạo: @post.createdDate</li>
                         </ul>
                     </div>
