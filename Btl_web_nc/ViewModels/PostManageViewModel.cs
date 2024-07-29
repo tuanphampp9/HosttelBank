@@ -3,6 +3,7 @@ using Btl_web_nc.Models;
 
 public class PostManageViewModel
 {
+    public string? TypeName { get; set; }
     public long PostId { get; set; }
 
     [Required(ErrorMessage = "Tiêu đề là bắt buộc.")]
@@ -26,7 +27,6 @@ public class PostManageViewModel
     [Required(ErrorMessage = "Ảnh đại diện là bắt buộc.")]
     public string? ImageUrls { get; set; } // Thay đổi thành List<string>?
 
-    [Required(ErrorMessage = "Loại nhà là bắt buộc.")]
     public long TypeId { get; set; } 
 
     public DateTime CreateDate{ get; set; } 
