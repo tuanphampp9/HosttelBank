@@ -3,6 +3,7 @@ using Btl_web_nc.Models;
 using Btl_web_nc.RepositoryInterfaces;
 
 [MyAuthenFilter]
+[AdminOrPropertyOwnerFilter]
 public class PostManageController : Controller
 {
 

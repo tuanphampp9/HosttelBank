@@ -3,15 +3,14 @@
 @{
     ViewData["Title"] = "Chỉnh sửa bài đăng";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var isAdmin = User.IsInRole("Admin"); // Kiểm tra nếu người dùng có vai trò Admin
 }
 
 <h1>@ViewData["Title"]</h1>
 
 <form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
     <input type="hidden" asp-for="PostId" />
-
     <div class="form-group">
         <label asp-for="Title" class="control-label"></label>
         <input asp-for="Title" class="form-control" />
@@ -50,7 +49,7 @@
         <span asp-validation-for="Area" class="text-danger"></span>
     </div>
     <input type="hidden" asp-for="Status" />
-    @if (User.FindFirst("RoleName")?.Value=="Admin")
+    @if (isAdmin)
     {
         <div class="form-group">
             <label asp-for="Status" class="control-label"></label>

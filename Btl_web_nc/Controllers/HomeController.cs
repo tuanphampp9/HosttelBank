@@ -7,7 +7,7 @@ using Btl_web_nc.RepositoryInterfaces;
 
 namespace Btl_web_nc.Controllers
 {
-    [MyAuthenFilter]
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

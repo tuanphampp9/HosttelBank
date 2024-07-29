@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Btl_web_nc.Controllers
 {
+    [MyAuthenFilter]
     public class FavouriteController : Controller
     {
         private readonly IFavouriteRepositories _favouriteRepository;

@@ -7,6 +7,7 @@ using System.Net;
 
 namespace Btl_web_nc.Controllers
 {
+    
     [Authorize]
     public class PostController : Controller
     {
@@ -25,12 +26,14 @@ namespace Btl_web_nc.Controllers
             return View();
         }
         [HttpGet]
+        [AdminOrPropertyOwnerFilter]
         public IActionResult PostNew()
         {
             return View();
         }
 
         [HttpPost]
+        [AdminOrPropertyOwnerFilter]
         public IActionResult PostNew(PostViewModel model) {
             if (ModelState.IsValid) {
                int userId = Int32.Parse(User.FindFirst("UserId")?.Value);
