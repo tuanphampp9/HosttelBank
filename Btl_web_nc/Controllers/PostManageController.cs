@@ -9,11 +9,13 @@ public class PostManageController : Controller
 
     private readonly IPostRepositories _postRepository;
     private readonly INotifyRepositories _notifyRepository;
+    private readonly ITypeRepositories _typeRepository;
 
-    public PostManageController(IPostRepositories postRepository, INotifyRepositories notifyRepository)
+    public PostManageController(IPostRepositories postRepository, INotifyRepositories notifyRepository, ITypeRepositories typeRepositories)
     {
         _postRepository = postRepository;
         _notifyRepository = notifyRepository;
+        _typeRepository = typeRepositories;
     }
 
     // Action để hiển thị danh sách bài đăng
@@ -83,7 +85,7 @@ public class PostManageController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        return View(post); // Trả về view 'Edit.cshtml' nếu model không hợp lệ
+        return View(post); 
     }
 
     
