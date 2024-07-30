@@ -8,10 +8,12 @@ public class PostManageController : Controller
 {
 
     private readonly IPostRepositories _postRepository;
+    private readonly INotifyRepositories _notifyRepository;
 
-    public PostManageController(IPostRepositories postRepository)
+    public PostManageController(IPostRepositories postRepository, INotifyRepositories notifyRepository)
     {
         _postRepository = postRepository;
+        _notifyRepository = notifyRepository;
     }
 
     // Action để hiển thị danh sách bài đăng
@@ -82,23 +84,23 @@ public class PostManageController : Controller
         return View(post); // Trả về view 'Edit.cshtml' nếu model không hợp lệ
     }
 
-    // Action để xóa bài đăng
+    
     [HttpPost]
     public async Task<IActionResult> DeleteAsync(int id)
     {
         try
         {
-            // Gọi phương thức xóa bài đăng từ repository và nhận kết quả trả về
+            
             bool result = await _postRepository.DeletePostAsync(id);
 
             if (result)
             {
-                // Nếu xóa thành công, chuyển hướng đến trang danh sách bài đăng với thông báo thành công
+              
                 TempData["SuccessMessage"] = "Bài đăng đã được xóa thành công.";
             }
             else
             {
-                // Nếu xóa không thành công, chuyển hướng đến trang danh sách bài đăng với thông báo lỗi
+                
                 TempData["ErrorMessage"] = "Không thể xóa bài đăng. Vui lòng thử lại.";
             }
 
@@ -106,43 +108,51 @@ public class PostManageController : Controller
         }
         catch (Exception)
         {
-            // Xử lý lỗi nếu có
+            
             TempData["ErrorMessage"] = "Xóa bài đăng không thành công. Vui lòng thử lại.";
             return RedirectToAction("Index");
         }
     }
 
     [HttpPost]
-    public async Task<IActionResult> ChangeStatus(int postId, string Status)
+    public async Task<IActionResult> ChangeStatus(int postId, string status, string content)
     {
         if (!User.IsInRole("Admin"))
         {
-            return Unauthorized(); // Hoặc trả về lỗi nếu người dùng không phải là Admin
+            return Unauthorized();
         }
 
         var post = await _postRepository.GetPostByIdAsync(postId);
 
         if (post == null)
         {
-            return NotFound(); // Nếu không tìm thấy bài đăng
+            return NotFound(); 
         }
-        post.status = Status; 
-        var postViewModel = new PostManageViewModel(post);
 
-        // Cập nhật trạng thái
+        post.status = status;
+
+        var notify = new Notify
+        {
+            userId = post.userId, 
+            postId = postId,
+            content = content
+        };
+        var postManageViewModel = new PostManageViewModel(post);
 
         try
+
         {
-            await _postRepository.UpdatePostAsync(postViewModel); // Cập nhật bài đăng
-            TempData["SuccessMessage"] = "Trạng thái bài đăng đã được cập nhật.";
+            await _postRepository.UpdatePostAsync(postManageViewModel);
+            await _notifyRepository.AddNotifyAsync(notify); 
+
+            TempData["SuccessMessage"] = "Trạng thái bài đăng đã được cập nhật và thông báo đã được gửi.";
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật trạng thái. Vui lòng thử lại.";
-            // Log lỗi nếu cần thiết
+            
         }
 
-        return RedirectToAction(nameof(Index)); // Chuyển hướng đến danh sách bài đăng
-
+        return RedirectToAction(nameof(Index)); 
     }
 }

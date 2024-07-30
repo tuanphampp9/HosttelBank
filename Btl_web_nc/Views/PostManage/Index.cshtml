@@ -99,25 +99,17 @@
                             <li class="list-group-item">Trạng thái:
                                 @if (isAdmin)
                                 {
-                                    <form action="@Url.Action("ChangeStatus", "PostManage")" method="post"
-                                        style="display:inline;">
-                                        <input type="hidden" name="postId" value="@post.postId" />
-                                        <select name="status" class="form-control form-control-sm" style="width: auto; display: inline;">
-                                            @if (post.status == "Pending")
-                                            {
-                                                <option value="Pending" selected>Đang chờ</option>
-                                                <option value="Approved">Duyệt</option>
-                                            }
-                                            else
-                                            {
-                                                <option value="Pending">Đang chờ</option>
-                                                <option value="Approved" selected>Duyệt</option>
-                                            }
-                                        </select>
-                                        <button type="submit" class="btn btn-warning btn-sm ml-2">Cập nhật</button>
-                                    </form>
-                                }else{
-                                    @post.status
+                                    <span class="@(post.status == "Approved" ? "status-approved" : post.status == "Pending" ? "status-pending" : post.status == "Rejected" ? "status-rejected" : "status-unknown")">@post.status</span>
+                                    <button type="button" class="btn btn-warning btn-sm ml-2" data-toggle="modal"
+                                            data-target="#updateStatusModal-@post.postId">Cập nhật</button>
+                                }
+                                else
+                                {
+                                    <span class="@(post.status == "Approved" ? "status-approved" : 
+                                                    post.status == "Pending" ? "status-pending" : 
+                                                    post.status == "Rejected" ? "status-rejected" : "status-unknown")">
+                                        @post.status
+                                    </span>
                                 }
                             </li>
                             <li class="list-group-item">Ngày tạo: @post.createdDate</li>
@@ -126,8 +118,10 @@
                 </div>
             </div>
         </div>
+        <partial name="_ChangeStatusModal" model="new PostNotifyViewModel { Post = post, Notify = new Notify() }" />
     }
 </div>
+
 
 <script type="text/javascript">
     $(document).ready(function () {
@@ -200,6 +194,25 @@
     .alert.hide {
         opacity: 0;
     }
+
+
+    .status-approved {
+    color: rgb(18, 168, 18);
+     font-weight: bold;
+    
+}
+
+.status-pending {
+    color: rgb(161, 161, 18);
+     font-weight: bold;
+    
+}
+
+.status-rejected {
+    color: rgb(165, 13, 13);
+     font-weight: bold;
+    
+}
 </style>
 
 <script type="text/javascript">
