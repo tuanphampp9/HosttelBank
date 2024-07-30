@@ -57,6 +57,7 @@ public class PostManageController : Controller
             TempData["ErrorMessage"] = $"Không tìm thấy bài đăng với id {id}. Vui lòng kiểm tra lại.";
             return NotFound();
         }
+        post.TypeName = _typeRepository.GetTypeById(post.TypeId).typeName;
         return View(post);
     }
 
@@ -72,6 +73,7 @@ public class PostManageController : Controller
         {
             try
             {
+                post.TypeId = _typeRepository.GetTypeByName(post.TypeName);
                 await _postRepository.UpdatePostAsync(post);
             }
             catch (Exception)

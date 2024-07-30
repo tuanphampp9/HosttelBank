@@ -73,6 +73,7 @@ namespace Btl_web_nc.Models
                 existingPost.status = post.Status;
                 existingPost.imageUrls = post.ImageUrls;
                 existingPost.typeId = post.TypeId;
+                existingPost.area = post.Area??0;
                 existingPost.updatedDate = DateTime.Now;
                 _dbContext.Entry(existingPost).State = EntityState.Modified;
                 await _dbContext.SaveChangesAsync();
