@@ -51,6 +51,7 @@ public class PostManageController : Controller
 
     // Action để chỉnh sửa bài đăng
     [HttpGet]
+    [PropertyOwnerAuthorFilter]
     public async Task<IActionResult> Edit(int id)
     {
         var post = await _postRepository.GetPostViewModelByIdAsync(id);
@@ -85,12 +86,45 @@ public class PostManageController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        return View(post); 
+        return View(post);
     }
 
-    
+
     [HttpPost]
-    public async Task<IActionResult> DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAdmin(int postId, string content)
+    {
+
+        var post = await _postRepository.GetPostByIdAsync(postId);
+
+        if (post == null)
+        {
+            return NotFound(); 
+        }
+
+        var notify = new Notify
+        {
+            userId = post.userId,
+            postId = postId,
+            content = content
+        };
+        try
+        {
+            
+            await _postRepository.DeletePostAsync(postId);
+            await _notifyRepository.AddNotifyAsync(notify);
+
+            TempData["SuccessMessage"] = "Bài đăng đã được xóa thành công và thông báo đã được gửi.";
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = "Có lỗi xảy ra khi gửi thông báo hoặc xóa bài đăng!";
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id)
     {
         try
         {
@@ -117,7 +151,6 @@ public class PostManageController : Controller
             return RedirectToAction("Index");
         }
     }
-
     [HttpPost]
     public async Task<IActionResult> ChangeStatus(int postId, string status, string content)
     {
@@ -130,14 +163,14 @@ public class PostManageController : Controller
 
         if (post == null)
         {
-            return NotFound(); 
+            return NotFound();
         }
 
         post.status = status;
 
         var notify = new Notify
         {
-            userId = post.userId, 
+            userId = post.userId,
             postId = postId,
             content = content
         };
@@ -147,16 +180,16 @@ public class PostManageController : Controller
 
         {
             await _postRepository.UpdatePostAsync(postManageViewModel);
-            await _notifyRepository.AddNotifyAsync(notify); 
+            await _notifyRepository.AddNotifyAsync(notify);
 
             TempData["SuccessMessage"] = "Trạng thái bài đăng đã được cập nhật và thông báo đã được gửi.";
         }
         catch (Exception)
         {
             TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật trạng thái. Vui lòng thử lại.";
-            
+
         }
 
-        return RedirectToAction(nameof(Index)); 
+        return RedirectToAction(nameof(Index));
     }
 }
