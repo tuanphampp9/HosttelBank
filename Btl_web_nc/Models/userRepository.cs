@@ -8,6 +8,7 @@ namespace Btl_web_nc.Models
     {
 
         private readonly AppDbContext _dbContext;
+
         public UserRepository(AppDbContext db)
         {
             _dbContext = db;
@@ -72,5 +73,81 @@ namespace Btl_web_nc.Models
             _dbContext.Users.Update(user);
             return await _dbContext.SaveChangesAsync() > 0;
         }
+
+
+
+        //Dang ky
+        public async Task CreateUserAsync(User user)
+        {
+            _dbContext.Users.Add(user);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<User> GetByUsernameAsync(string username)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.username == username);
+        }
+        public async Task<User> GetUserByPhoneNumberAsync(string phoneNumber)
+        {
+            return await _dbContext.Users.FirstOrDefaultAsync(u => u.phoneNumber == phoneNumber);
+        }
+
+
+
+        //Quản lý tài khoản
+        public IEnumerable<User> GetAllUsers()
+        {
+            return _dbContext.Users.ToList();
+        }
+
+        public User MaGetUserById(long id)
+        {
+            return _dbContext.Users.Find(id);
+        }
+
+        public void AddUser(User user)
+        {
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
+        }
+
+        public void UpdateUser(User user)
+        {
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+        }
+
+        public void DeleteUser(int id)
+        {
+            var user = _dbContext.Users.Find(id);
+            if (user != null)
+            {
+                _dbContext.Users.Remove(user);
+                _dbContext.SaveChanges();
+            }
+        }
+
+        public User GetUserByUsername(string username)
+        {
+            return _dbContext.Users.FirstOrDefault(u => u.username == username);
+        }
+
+
+        /*//Thông tin cá nhân
+        public User ProGetUserById(int userId)
+        {
+            return _dbContext.Users.Find(userId);
+        }
+
+        public User ProGetUserByUsername(string username)
+        {
+            return _dbContext.Users.FirstOrDefault(u => u.username == username);
+        }
+
+        public void ProUpdateUser(User user)
+        {
+            _dbContext.Users.Update(user);
+            _dbContext.SaveChanges();
+        }*/
     }
 }

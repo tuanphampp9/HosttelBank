@@ -37,6 +37,8 @@ builder.Services.AddScoped<ITypeRepositories, TypeRepository>();
 builder.Services.AddScoped<IPostRepositories, PostRepository>();
 builder.Services.AddScoped<INotifyRepositories, NotifyRepository>();
 
+builder.Services.AddScoped<IPasswordHasher<User>,PasswordHasher<User>>();
+
 builder.Services.ConfigureApplicationCookie(options =>
     {
         options.LoginPath = "/Account/Login"; // Đường dẫn đến trang đăng nhập

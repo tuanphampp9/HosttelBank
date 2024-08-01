@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -34,41 +34,49 @@
                                 </a>
                             </li>
                         }
-                        <li class="nav-item">
-                        <li class="nav-item">
-                                @if (User.Identity!.IsAuthenticated)
-                                {
-                                <a asp-action="Logout" asp-controller="Account" class="nav-link style=" margin-left:auto""
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng
-                                    xuất</a>
-                                    @if (User.FindFirst("RoleName")?.Value != "Renter")
-                                    {
-                                         <li class="nav-item">
-                                             <a class="nav-link text-dark" asp-area="" asp-controller="PostManage"
-                                             asp-action="Index">Quản lý bài đăng</a>
-                                        </li>
-                                    }
-                                    <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-action="ChangePassword" asp-controller="Account">Đổi mật khẩu</a>
-                                    </li>
 
-                                }
-                                else
+                        <li class="nav-item">
+                            @if (User.Identity!.IsAuthenticated)
+                            {
+                                <a asp-action="Logout" asp-controller="Account" class="nav-link" style="margin-left:auto"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
+
+                                @if (User.FindFirst("RoleName")?.Value != "Renter")
                                 {
-                            <a asp-action="Login" asp-controller="Account" class="nav-link style=" margin-left:auto"">Đăng
-                                nhập</a>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="PostManage"
+                                            asp-action="Index">Quản lý bài đăng</a>
+                                    </li>
                                 }
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-action="ChangePassword" asp-controller="Account">Đổi mật khẩu</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <a asp-action="Login" asp-controller="Account" class="nav-link" style="margin-left:auto">Đăng nhập</a>
+                            }
+                        </li>
 
                         <form id="logout-form" asp-action="Logout" asp-controller="Account" method="post"
                             style="display: none;">
                             <input type="hidden" />
                         </form>
 
-                                @if (User.FindFirst("RoleName")?.Value == "PropertyOwner")
-                                {
-                            <li class="nav-item" style="margin-left:auto"><a class="nav-link text-dark" asp-action="PostNew"
-                                    asp-controller="Post">Đăng tin</a></li>
-                                }
+                        @if (User.FindFirst("RoleName")?.Value == "PropertyOwner")
+                        {
+                            <li class="nav-item" style="margin-left:auto">
+                                <a class="nav-link text-dark" asp-action="PostNew" asp-controller="Post">Đăng tin</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin"
+                                   asp-action="Admin">Quản lý tài khoản</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -80,11 +88,6 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Btl_web_nc - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
