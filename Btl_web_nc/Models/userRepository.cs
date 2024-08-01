@@ -93,6 +93,10 @@ namespace Btl_web_nc.Models
 
         public void AddUser(User user)
         {
+            if (!_dbContext.Roles.Any(r => r.roleId == user.roleId))
+            {
+                throw new ArgumentException("Invalid RoleId");
+            }
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
         }
@@ -103,7 +107,7 @@ namespace Btl_web_nc.Models
             _dbContext.SaveChanges();
         }
 
-        public void DeleteUser(int id)
+        public void DeleteUser(long id)
         {
             var user = _dbContext.Users.Find(id);
             if (user != null)
@@ -119,7 +123,7 @@ namespace Btl_web_nc.Models
         }
 
 
-        /*//Thông tin cá nhân
+        //Thông tin cá nhân
         public User ProGetUserById(int userId)
         {
             return _dbContext.Users.Find(userId);
@@ -134,6 +138,6 @@ namespace Btl_web_nc.Models
         {
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
-        }*/
+        }
     }
 }

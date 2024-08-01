@@ -33,13 +33,13 @@ namespace Btl_web_nc.RepositoryInterfaces
         User MaGetUserById(long id);
         void AddUser(User user);
         void UpdateUser(User user);
-        void DeleteUser(int id);
+        void DeleteUser(long id);
         User GetUserByUsername(string username);
 
 
-        /* //Thông tin cá nhân 
+         //Thông tin cá nhân 
          User ProGetUserById(int userId);
-         User ProetUserByUsername(string username);
-         void ProUpdateUser(User user);*/
+         User ProGetUserByUsername(string username);
+         void ProUpdateUser(User user);
     }
 }

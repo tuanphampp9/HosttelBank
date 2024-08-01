@@ -38,6 +38,7 @@ builder.Services.AddScoped<IPostRepositories, PostRepository>();
 builder.Services.AddScoped<INotifyRepositories, NotifyRepository>();
 
 builder.Services.AddScoped<IPasswordHasher<User>,PasswordHasher<User>>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 
 builder.Services.ConfigureApplicationCookie(options =>
     {

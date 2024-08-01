@@ -38,7 +38,8 @@ namespace Btl_web_nc.Controllers
                 {
                     username = model.Username,
                     phoneNumber = model.PhoneNumber,
-                    password = BCrypt.Net.BCrypt.HashPassword(model.Password),
+                    password = model.Password,
+                    roleId = model.IsAdmin ? 1 : 2,
                 };
 
                 _userRepository.AddUser(user);
