@@ -80,14 +80,14 @@
                                 }
                                 
                             @if(isAdmin){
-                                <form action="@Url.Action("DeleteAdmin", new { id = post.postId })" method="post"
+                                @* <form action="@Url.Action("DeleteAdmin", new { id = post.postId })" method="post"
                                     style="display:inline;">
                                     <input type="hidden" name="_method" value="POST" />
                                     
                                          <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#DeleteModal-@post.postId">
                                             <i class="fas fa-trash-alt"></i> <!-- Biểu tượng thùng rác -->
                                         </button>
-                                </form>
+                                </form> *@
                             }else{
                                 <form action="@Url.Action("Delete", new { id = post.postId })" method="post"
                                     style="display:inline;">

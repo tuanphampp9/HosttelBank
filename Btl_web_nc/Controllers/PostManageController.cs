@@ -127,29 +127,29 @@ public class PostManageController : Controller
     public async Task<IActionResult> Delete(int id)
     {
         try
-        {
-            
-            bool result = await _postRepository.DeletePostAsync(id);
+    {
+        // Xóa các bản ghi Notify có postId trùng với id
+        bool notifyResult = await _notifyRepository.DeleteNotifiesByPostIdAsync(id);
 
-            if (result)
-            {
-              
-                TempData["SuccessMessage"] = "Bài đăng đã được xóa thành công.";
-            }
-            else
-            {
-                
-                TempData["ErrorMessage"] = "Không thể xóa bài đăng. Vui lòng thử lại.";
-            }
+        // Xóa bài đăng
+        bool postResult = await _postRepository.DeletePostAsync(id);
 
-            return RedirectToAction("Index");
-        }
-        catch (Exception)
+        if (postResult && notifyResult)
         {
-            
-            TempData["ErrorMessage"] = "Xóa bài đăng không thành công. Vui lòng thử lại.";
-            return RedirectToAction("Index");
+            TempData["SuccessMessage"] = "Bài đăng và thông báo liên quan đã được xóa thành công.";
         }
+        else
+        {
+            TempData["ErrorMessage"] = "Không thể xóa bài đăng hoặc thông báo liên quan. Vui lòng thử lại.";
+        }
+
+        return RedirectToAction("Index");
+    }
+    catch (Exception)
+    {
+        TempData["ErrorMessage"] = "Xóa bài đăng không thành công. Vui lòng thử lại.";
+        return RedirectToAction("Index");
+    }
     }
     [HttpPost]
     public async Task<IActionResult> ChangeStatus(int postId, string status, string content)
