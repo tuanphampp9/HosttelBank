@@ -41,5 +41,7 @@ namespace Btl_web_nc.RepositoryInterfaces
          User ProGetUserById(int userId);
          User ProetUserByUsername(string username);
          void ProUpdateUser(User user);*/
+        public Task<bool> ChangePasswordAsync(User user, string currentPassword, string newPassword);
+
     }
 }

@@ -8,12 +8,14 @@ public class PostManageController : Controller
 {
 
     private readonly IPostRepositories _postRepository;
+    private readonly INotifyRepositories _notifyRepository;
     private readonly ITypeRepositories _typeRepository;
 
-    public PostManageController(IPostRepositories postRepository, ITypeRepositories typeRepository)
+    public PostManageController(IPostRepositories postRepository, INotifyRepositories notifyRepository, ITypeRepositories typeRepositories)
     {
         _postRepository = postRepository;
-        _typeRepository = typeRepository;
+        _notifyRepository = notifyRepository;
+        _typeRepository = typeRepositories;
     }
 
     // Action để hiển thị danh sách bài đăng
@@ -49,6 +51,7 @@ public class PostManageController : Controller
 
     // Action để chỉnh sửa bài đăng
     [HttpGet]
+    [PropertyOwnerAuthorFilter]
     public async Task<IActionResult> Edit(int id)
     {
         var post = await _postRepository.GetPostViewModelByIdAsync(id);
@@ -83,36 +86,110 @@ public class PostManageController : Controller
             return RedirectToAction(nameof(Index));
         }
 
-        return View(post); // Trả về view 'Edit.cshtml' nếu model không hợp lệ
+        return View(post);
     }
 
-    // Action để xóa bài đăng
+
     [HttpPost]
-    public async Task<IActionResult> DeleteAsync(int id)
+    public async Task<IActionResult> DeleteAdmin(int postId, string content)
     {
+
+        var post = await _postRepository.GetPostByIdAsync(postId);
+
+        if (post == null)
+        {
+            return NotFound(); 
+        }
+
+        var notify = new Notify
+        {
+            userId = post.userId,
+            postId = postId,
+            content = content
+        };
         try
         {
-            // Gọi phương thức xóa bài đăng từ repository và nhận kết quả trả về
-            bool result = await _postRepository.DeletePostAsync(id);
+            
+            await _postRepository.DeletePostAsync(postId);
+            await _notifyRepository.AddNotifyAsync(notify);
 
-            if (result)
-            {
-                // Nếu xóa thành công, chuyển hướng đến trang danh sách bài đăng với thông báo thành công
-                TempData["SuccessMessage"] = "Bài đăng đã được xóa thành công.";
-            }
-            else
-            {
-                // Nếu xóa không thành công, chuyển hướng đến trang danh sách bài đăng với thông báo lỗi
-                TempData["ErrorMessage"] = "Không thể xóa bài đăng. Vui lòng thử lại.";
-            }
+            TempData["SuccessMessage"] = "Bài đăng đã được xóa thành công và thông báo đã được gửi.";
+        }
+        catch (Exception ex)
+        {
+            TempData["ErrorMessage"] = "Có lỗi xảy ra khi gửi thông báo hoặc xóa bài đăng!";
+        }
 
-            return RedirectToAction("Index");
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> Delete(int id)
+    {
+        try
+    {
+        // Xóa các bản ghi Notify có postId trùng với id
+        bool notifyResult = await _notifyRepository.DeleteNotifiesByPostIdAsync(id);
+
+        // Xóa bài đăng
+        bool postResult = await _postRepository.DeletePostAsync(id);
+
+        if (postResult && notifyResult)
+        {
+            TempData["SuccessMessage"] = "Bài đăng và thông báo liên quan đã được xóa thành công.";
+        }
+        else
+        {
+            TempData["ErrorMessage"] = "Không thể xóa bài đăng hoặc thông báo liên quan. Vui lòng thử lại.";
+        }
+
+        return RedirectToAction("Index");
+    }
+    catch (Exception)
+    {
+        TempData["ErrorMessage"] = "Xóa bài đăng không thành công. Vui lòng thử lại.";
+        return RedirectToAction("Index");
+    }
+    }
+    [HttpPost]
+    public async Task<IActionResult> ChangeStatus(int postId, string status, string content)
+    {
+        if (!User.IsInRole("Admin"))
+        {
+            return Unauthorized();
+        }
+
+        var post = await _postRepository.GetPostByIdAsync(postId);
+
+        if (post == null)
+        {
+            return NotFound();
+        }
+
+        post.status = status;
+
+        var notify = new Notify
+        {
+            userId = post.userId,
+            postId = postId,
+            content = content
+        };
+        var postManageViewModel = new PostManageViewModel(post);
+
+        try
+
+        {
+            await _postRepository.UpdatePostAsync(postManageViewModel);
+            await _notifyRepository.AddNotifyAsync(notify);
+
+            TempData["SuccessMessage"] = "Trạng thái bài đăng đã được cập nhật và thông báo đã được gửi.";
         }
         catch (Exception)
         {
-            // Xử lý lỗi nếu có
-            TempData["ErrorMessage"] = "Xóa bài đăng không thành công. Vui lòng thử lại.";
-            return RedirectToAction("Index");
+            TempData["ErrorMessage"] = "Có lỗi xảy ra khi cập nhật trạng thái. Vui lòng thử lại.";
+
         }
+
+        return RedirectToAction(nameof(Index));
     }
 }
