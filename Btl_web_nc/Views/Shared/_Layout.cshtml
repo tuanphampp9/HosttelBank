@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -25,6 +25,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+<<<<<<< HEAD
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home"
                                 asp-action="Privacy">Privacy</a>
@@ -38,49 +39,71 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="User"
                                asp-action="Profile">Thông tin cá nhân</a>
                         </li>
+=======
+
+                        @if (User.IsInRole("Renter") || User.IsInRole("PropertyOwner"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-action="ListFavourites" asp-controller="Post">
+                                    <i class="fa-regular fa-heart" style="cursor:pointer"></i>
+                                </a>
+                            </li>
+                        }
+
+>>>>>>> b0a59df7d190856b19dde18120a381789514f567
                         <li class="nav-item">
                             @if (User.Identity!.IsAuthenticated)
                             {
-                                <a asp-action="Logout" asp-controller="Account" class="nav-link style="margin-left:auto""
-                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng
-                                    xuất</a>
+                                <a asp-action="Logout" asp-controller="Account" class="nav-link" style="margin-left:auto"
+                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Đăng xuất</a>
+
                                 @if (User.FindFirst("RoleName")?.Value != "Renter")
                                 {
-                                <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="PostManage" asp-action="Index">Quản lý bài đăng</a>
-                                </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="PostManage"
+                                            asp-action="Index">Quản lý bài đăng</a>
+                                    </li>
                                 }
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-action="ChangePassword" asp-controller="Account">Đổi mật khẩu</a>
+                                </li>
                             }
                             else
                             {
-                                <a asp-action="Login" asp-controller="Account" class="nav-link style="margin-left:auto"">Đăng nhập</a>
+                                <a asp-action="Login" asp-controller="Account" class="nav-link" style="margin-left:auto">Đăng nhập</a>
                             }
-
-                            <form id="logout-form" asp-action="Logout" asp-controller="Account" method="post"
-                                style="display: none;">
-                                <input type="hidden" />
-                            </form>
                         </li>
+
+                        <form id="logout-form" asp-action="Logout" asp-controller="Account" method="post"
+                            style="display: none;">
+                            <input type="hidden" />
+                        </form>
+
                         @if (User.FindFirst("RoleName")?.Value == "PropertyOwner")
                         {
-                            <li class="nav-item" style="margin-left:auto"><a class="nav-link text-dark" asp-action="PostNew" asp-controller="Post">Đăng tin</a></li>
+                            <li class="nav-item" style="margin-left:auto">
+                                <a class="nav-link text-dark" asp-action="PostNew" asp-controller="Post">Đăng tin</a>
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Admin"
+                                   asp-action="Admin">Quản lý tài khoản</a>
+                            </li>
                         }
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
-     <div class="container">
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-     </div>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
 
-    <!--<footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - Btl_web_nc - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>-->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

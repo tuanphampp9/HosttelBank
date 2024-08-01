@@ -17,7 +17,7 @@ namespace Btl_web_nc.Models
         public async Task<User> AuthenticateUserAsync(string userName, string password)
         {
 
-            var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.username == userName );
+            var user = await _dbContext.Users.SingleOrDefaultAsync(u => u.username == userName);
 
             if (user == null)
             {
@@ -38,14 +38,14 @@ namespace Btl_web_nc.Models
         }
         private bool VerifyPassword(string password, string hashedPassword)
         {
-            if(password == hashedPassword)
+            if (password == hashedPassword)
                 return true;
             return false;
         }
 
         public User GetUserById(long userId)
         {
-            var user =  _dbContext.Users.SingleOrDefault(u => u.userId.Equals(userId));
+            var user = _dbContext.Users.SingleOrDefault(u => u.userId.Equals(userId));
             return user ?? new User();
         }
 
@@ -57,7 +57,21 @@ namespace Btl_web_nc.Models
 
         public async Task<bool> UserExistsAsync(int UserId)
         {
-            return await _dbContext.Users.AnyAsync(u => u.userId.Equals( UserId));
+            return await _dbContext.Users.AnyAsync(u => u.userId.Equals(UserId));
+        }
+
+        public async Task<bool> ChangePasswordAsync(User user, string currentPassword, string newPassword)
+        {
+            // Xác minh mật khẩu hiện tại
+            if (user.password != currentPassword)
+            {
+                return false;
+            }
+
+            // Thay đổi mật khẩu
+            user.password = newPassword;
+            _dbContext.Users.Update(user);
+            return await _dbContext.SaveChangesAsync() > 0;
         }
 
 

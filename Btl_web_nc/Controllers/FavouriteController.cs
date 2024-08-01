@@ -31,6 +31,5 @@ namespace Btl_web_nc.Controllers
             _favouriteRepository.RemoveFromFavourite(favourite.favouriteId);
             return Json(new { success = true });
         }
-
     }
 }

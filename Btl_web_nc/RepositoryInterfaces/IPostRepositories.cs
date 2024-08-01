@@ -15,5 +15,7 @@ namespace Btl_web_nc.RepositoryInterfaces
 
         public List<Post> GetPostsByUserId(long userId);
 
+        public List<Post> GetFavouritePostsByUserId(long userId);
+
     }
 }

@@ -14,12 +14,14 @@ namespace Btl_web_nc.Controllers
         private readonly IPostRepositories postRepositories;
         private readonly ITypeRepositories typeRepositories;
         private readonly IFavouriteRepositories favouriteRepositories;
+        private readonly IUserRepositories userRepositories;
 
-        public PostController(IPostRepositories postRepositories, ITypeRepositories typeRepositories, IFavouriteRepositories favouriteRepositories)
+        public PostController(IPostRepositories postRepositories, ITypeRepositories typeRepositories, IFavouriteRepositories favouriteRepositories, IUserRepositories userRepositories)
         {
             this.postRepositories = postRepositories;
             this.typeRepositories = typeRepositories;
             this.favouriteRepositories = favouriteRepositories;
+            this.userRepositories = userRepositories;
         }
         public IActionResult Index()
         {
@@ -73,6 +75,30 @@ namespace Btl_web_nc.Controllers
                 ViewBag.isFavourite = false;
             }
             return View(post);
+        }
+
+        [HttpGet]
+        public IActionResult ListFavourites()
+        {
+           int userId = Int32.Parse(User.FindFirst("UserId")?.Value);
+            List<Post> favouritePosts = postRepositories.GetFavouritePostsByUserId(userId).Select(p => new Post
+            {
+                postId = p.postId,
+                userId = p.userId,
+                typeId = p.typeId,
+                title = p.title,
+                description = p.description,
+                address = p.address,
+                price = p.price,
+                status = p.status,
+                imageUrls = p.imageUrls,
+                createdDate = p.createdDate,
+                updatedDate = p.updatedDate,
+                area = p.area,
+                User = userRepositories.GetUserById(p.userId),
+                Type = typeRepositories.GetTypeById(p.typeId)
+            }).ToList().Where(p => p.status == "Approved").ToList();
+            return View("favouritePosts",favouritePosts);
         }
     }
 }

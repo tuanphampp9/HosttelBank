@@ -39,7 +39,14 @@ namespace Btl_web_nc.RepositoryInterfaces
 
          //Thông tin cá nhân 
          User ProGetUserById(int userId);
+<<<<<<< HEAD
          User ProGetUserByUsername(string username);
          void ProUpdateUser(User user);
+=======
+         User ProetUserByUsername(string username);
+         void ProUpdateUser(User user);*/
+        public Task<bool> ChangePasswordAsync(User user, string currentPassword, string newPassword);
+
+>>>>>>> b0a59df7d190856b19dde18120a381789514f567
     }
 }
