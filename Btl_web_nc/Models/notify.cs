@@ -10,6 +10,7 @@ namespace Btl_web_nc.Models
         public long notifyId { get; set; }
         public long userId { get; set; }
         public long postId { get; set; }
+        [Required(ErrorMessage = "Bạn phải nhập nội dung thông báo!")]
         public string? content { get; set; }
         [ForeignKey("userId")]
         public virtual User? User { get; set; }

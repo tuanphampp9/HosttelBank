@@ -15,5 +15,8 @@ namespace Btl_web_nc.RepositoryInterfaces
 
         // Kiểm tra xem người dùng có tồn tại không
         public Task<bool> UserExistsAsync(int userName);
+
+        public Task<bool> ChangePasswordAsync(User user, string currentPassword, string newPassword);
+
     }
 }
